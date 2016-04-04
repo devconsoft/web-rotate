@@ -33,11 +33,13 @@ effect without reloading the top web-page manually. Defaults to false.
 ### config (list)
 config is a list of configuration items.
 An item has a type, src and time (optional, see also time above).
-Allowed types are image, page and web.
+Allowed types are image, page, web and client.
 
 For image and page, the src is the name of a file in the image/page directory.
 web is used for external pages and the src should be a full URL to the resource
 to be displayed.
+
+For client use, see below.
 
 ### index (integer)
 Starting index, which item in the config list should be the first item to be loaded.
@@ -51,8 +53,14 @@ a one time start index.
 ## Test your installation
 Test your installation by going to web-rotate/?cfg=test
 
-## Logging
+## Web-rotate client
+Some pages might not work inside an iframe. If the side you want to bring into
+your rotation offers a way to inject content such as custom headers/footers,
+the web-rotate client might work.
+Make sure that the js/rotateclient.js file (or its content) is loaded on the
+target site to activate the client. The framework will take care of the rest.
 
+## Logging
 In production environment it is suggested to set logLevel to OFF.
 
 The different log-levels are:
@@ -66,5 +74,11 @@ The different log-levels are:
 ## Trouble shooting
 Make sure that your installation works, see Test your installation.
 Web-rotate uses iframes to show the content. Many modern sites uses various
-technics to prevent them from being displayed in an iframe. That is a security
+techniques to prevent them from being displayed in an iframe. That is a security
 measure that will prevent web-rotate to work properly with these sites.
+
+Some sites suffers from bad design/implementation that might also prevent the
+use of iframes. It might be in the form of not the entire site being shown,
+menus not showing or sections disappearing inside the iframe.
+
+A work-around is to use the web-rotate client, see above.

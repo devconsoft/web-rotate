@@ -11,11 +11,11 @@ function startWebRotate() {
 
 /**
  *
- * @param {Object} config
+ * @param {Object} cfg
  */
-function setIndex(config) {
-    var hash = window.location.hash.substr(1);
-    config.index = hash || config.index || 0;
+function setIndex(cfg) {
+    var hash = parseInt(window.location.hash.substr(1));
+    cfg.index = hash || cfg.index || 0;
     window.location.hash = "";
 }
 
@@ -24,24 +24,35 @@ function setIndex(config) {
  * @param item
  */
 function dispatchItem(item) {
-    log.debug(item.type, item);
+    log.debug(item);
     var src = "";
     switch(item.type) {
         case "image":
             src = urlToFrameworkFile(item.src, "images");
+            document.getElementById('mainframe').src = src;
             break;
         case "page":
             src = urlToFrameworkFile(item.src, "pages");
+            document.getElementById('mainframe').src = src;
             break;
         case "web":
             src = item.src;
+            document.getElementById('mainframe').src = src;
+            break;
+        case "client":
+            var url = document.createElement('a');
+            url.href = item.src;
+            url.search = url.search.substr(1) +
+                "&webRotateURL=" + encodeURIComponent(window.location.href) +
+                "&webRotateIndex=" + item.index +
+                "&webRotateTime=" + item.time
+            window.location.replace(url.href);
             break;
         default:
-            var errorMsg = "Unknown configuration item type: " + item;
+            var errorMsg = "Unknown configuration item type: " + item.type;
             log.error(errorMsg);
             throw new Error(errorMsg);
     }
-    document.getElementById('mainframe').src = src;
 }
 
 /**
@@ -61,10 +72,10 @@ function dispatch(cfg) {
         cfg.index = 0;
     }
     var item = cfg.config[cfg.index];
-    var timeInSec = item.time || cfg.time || 5;
-    log.debug("Loading item [" + cfg.index + "], time: " + timeInSec + "s");
+    item.time = item.time || cfg.time || 5;
+    item.index = cfg.index;
+    log.debug("Loading item [" + item.index + "], time: " + item.time + "s");
     dispatchItem(item);
     cfg.index++;
-
-    setTimeout(function() { dispatch(config); }, timeInSec * 1000);
+    setTimeout(function() { dispatch(config); }, item.time * 1000);
 }
