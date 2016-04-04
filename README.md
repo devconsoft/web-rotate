@@ -8,29 +8,45 @@ monitor or similar, where each "slide" is shown a specific amount of time.
 1. Create a configuration file with extension .json in the config directory.
 1. Start the display by going to web-rotate/?cfg=YOURCONFIG
 
+If cfg is not specified, it defaults to the default configuration.
+
 ## Configuration option
 
 Look at config/test.json for examples of configuration options.
 
-### time
+All top level configuration attributes can be overridden or set via the URL
+query syntax, e.g. cfg?=test&logLevel=DEBUG&reload=true.
+
+### time (number)
 Time is the number of seconds a specific item should be shown.
 A default time can be set on top level which will be used if time
-is not specified for an item.
+is not specified for an item. Defaults to 5.
 
-### logLevel
-See logging below
+### logLevel (string)
+See logging below. Defaults to OFF.
 
-### reload
+### reload (boolean)
 reload can be set to true or false. If set to true, it reloads the configuration
 at the end of a cycle. This will allow updates in configuration to take
-effect without reloading the top web-page manually.
+effect without reloading the top web-page manually. Defaults to false.
 
-### config
+### config (list)
 config is a list of configuration items.
-An item has a type, src and time (optional, see also time above). Allowed types are image, page and web.
+An item has a type, src and time (optional, see also time above).
+Allowed types are image, page and web.
+
 For image and page, the src is the name of a file in the image/page directory.
 web is used for external pages and the src should be a full URL to the resource
 to be displayed.
+
+### index (integer)
+Starting index, which item in the config list should be the first item to be loaded.
+Defaults to zero. If used together with reload, it will have the effect that
+items with lower index will never be shown.
+
+## Special use of hash in URL
+The hash part of the URL has special meaning to web rotate, it is used to pass
+a one time start index.
 
 ## Test your installation
 Test your installation by going to web-rotate/?cfg=test

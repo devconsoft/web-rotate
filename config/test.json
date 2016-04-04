@@ -2,7 +2,9 @@
   "time": 5,
   "logLevel": "DEBUG",
   "reload": true,
+  "index" : 1,
   "config": [
+    { "type": "page", "src": "will.never.be.used.html" },
     { "type": "image", "src": "Example.png", "time": 4 },
     { "type": "page", "src": "test.html", "time": 2.5 },
     { "type": "web", "src": "http://example.com" }

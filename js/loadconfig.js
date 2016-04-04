@@ -3,11 +3,12 @@
  * Returns an associative arrays with key-value pairs based on the
  * query string part of an url.
  * If no search string is provided, it uses an empty string.
- * Keys are stored as strict lower case.
+ * Multiple uses of a key results in all the associated values being saved in
+ * a single array associated with that key.
  *
  * @param {string} [searchStr] Search string
  *
- * @returns {array} Associative array of search string key-value parameters.
+ * @returns {Object} Object of search string key-value parameters.
  */
 function getQueryStringParams() {
 
@@ -28,7 +29,7 @@ function getQueryStringParams() {
     var value = "";
 
     while (match = search.exec(query)) {
-        key = decode(match[1]).toLowerCase();
+        key = decode(match[1]);
         value = decode(match[2]);
         if (key in result) {
             var oldValue = result[key];
@@ -113,6 +114,18 @@ function readConfig(fileName) {
     }
 }
 
+/**
+  * Merge conf2 into conf1, excluding properties in exclude list
+  * @param {Object} conf1 primary configuration object, destination
+  * @param {Object} conf2 secondary configuration object, read from
+  * @return conf1
+  */
+function mergeConfig(conf1, conf2) {
+    for (prop in conf2) {
+        conf1[prop] = conf2[prop];
+    }
+    return conf1;
+}
 
 /**
  * Returns the config based on the query string argument in the location URL.
@@ -121,9 +134,10 @@ function readConfig(fileName) {
  */
 function getConfig() {
     var args = getQueryStringParams();
-    var configFile = args['config'] || args['cfg'] || "default";
+    var configFile = args['cfg'] || "default";
     configFile = urlToFrameworkFile(configFile, "config", "json");
     config = readConfig(configFile);
+    config = mergeConfig(config, args);
     return config;
 }
 

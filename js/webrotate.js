@@ -4,9 +4,19 @@
  */
 function startWebRotate() {
     var cfg = getConfig();
-    cfg.index = 0;
+    setIndex(cfg);
     log.level = cfg.logLevel || log.level;
     dispatch(cfg);
+}
+
+/**
+ *
+ * @param {Object} config
+ */
+function setIndex(config) {
+    var hash = window.location.hash.substr(1);
+    config.index = hash || config.index || 0;
+    window.location.hash = "";
 }
 
 /**
@@ -42,7 +52,7 @@ function dispatchItem(item) {
  */
 function dispatch(cfg) {
     if (cfg.index >= cfg.config.length) { // end of list
-        if (cfg.reload) {
+        if (cfg.reload !== "false" || cfg.reload) {
             log.debug("Reloading page");
             window.location.reload(true);
             return;
@@ -51,11 +61,10 @@ function dispatch(cfg) {
         cfg.index = 0;
     }
     var item = cfg.config[cfg.index];
-    var defaultTimeInSec = cfg.time || 5;
-
-    log.debug("Loading item [" + cfg.index + "]");
+    var timeInSec = item.time || cfg.time || 5;
+    log.debug("Loading item [" + cfg.index + "], time: " + timeInSec + "s");
     dispatchItem(item);
     cfg.index++;
-    var timeInSec = item.time || defaultTimeInSec;
+
     setTimeout(function() { dispatch(config); }, timeInSec * 1000);
 }
