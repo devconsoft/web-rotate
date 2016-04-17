@@ -29,7 +29,8 @@ function dispatchItem(item) {
     switch(item.type) {
         case "image":
             src = urlToFrameworkFile(item.src, "images");
-            document.getElementById('mainframe').src = src;
+            document.getElementById('mainframe').src = "image.html" +
+                "?imageUrl=" + encodeURIComponent(src);
             break;
         case "page":
             src = urlToFrameworkFile(item.src, "pages");
