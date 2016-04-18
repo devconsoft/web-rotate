@@ -1,0 +1,17 @@
+div.content {
+    position:absolute; left: 0; right: 0; bottom: 0; top: 0px;
+    text-align: center;
+}
+
+div.content:BEFORE {
+    content: "";
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+img.picture {
+    display: inline-block;
+    vertical-align: middle;
+}
+
