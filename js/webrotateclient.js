@@ -59,6 +59,9 @@
 
         if (url && index && timeInSec) {
             var nextIndex = 1 + parseInt(index);
+			if (url.charAt(url.length - 1) !== "#") {
+				url += "#"
+			}
             var src = url + nextIndex;
             setTimeout(function() {
                 // the URL sent from web-rotate will always end with #.
