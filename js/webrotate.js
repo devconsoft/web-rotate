@@ -78,5 +78,5 @@ function dispatch(cfg) {
     log.debug("Loading item [" + item.index + "], time: " + item.time + "s");
     dispatchItem(item);
     cfg.index++;
-    setTimeout(function() { dispatch(config); }, item.time * 1000);
+    setTimeout(function() { dispatch(cfg); }, item.time * 1000);
 }

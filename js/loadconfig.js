@@ -136,7 +136,7 @@ function getConfig() {
     var args = getQueryStringParams();
     var configFile = args['cfg'] || "default";
     configFile = urlToFrameworkFile(configFile, "config", "json");
-    config = readConfig(configFile);
+    var config = readConfig(configFile);
     config = mergeConfig(config, args);
     return config;
 }
