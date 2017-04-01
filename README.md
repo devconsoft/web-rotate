@@ -46,6 +46,9 @@ Starting index, which item in the config list should be the first item to be loa
 Defaults to zero. If used together with reload, it will have the effect that
 items with lower index will never be shown.
 
+### title (string)
+Specifies the title of the top page. Defaults to "Web Rotate".
+
 ## Special use of hash in URL
 The hash part of the URL has special meaning to web rotate, it is used to pass
 a one time start index.

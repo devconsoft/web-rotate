@@ -3,6 +3,7 @@
   "logLevel": "DEBUG",
   "reload": true,
   "index" : 1,
+  "title" : "Web Rotate - Test",
   "config": [
     { "type": "page", "src": "will.never.be.used.html" },
     { "type": "image", "src": "Example.png", "time": 4 },

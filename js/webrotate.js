@@ -4,9 +4,21 @@
  */
 function startWebRotate() {
     var cfg = getConfig();
+    setLogLevel(cfg);
     setIndex(cfg);
-    log.level = cfg.logLevel || log.level;
+    setPageTitle(cfg);
     dispatch(cfg);
+}
+
+
+function setPageTitle(cfg) {
+    document.title = cfg.title || "Web Rotate";
+    log.debug("Updated page title:" + document.title);
+}
+
+function setLogLevel(cfg) {
+    log.level = cfg.logLevel || log.level;
+    log.debug("Updated log level: " + log.level);
 }
 
 /**
