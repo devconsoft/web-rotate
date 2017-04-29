@@ -8,7 +8,7 @@
 <script type="text/javascript" src="js/utils.js"></script>
 <script type="text/javascript" src="js/loadconfig.js"></script>
 <script type="text/javascript" src="js/webrotate.js"></script>
-<body onload="startWebRotate()">
+<body onload="startWebRotate()" onerror="setTimeout(startWebRotate, 5000)">
     <div class="content" id="buffer1">
         <script type="text/javascript">
         var el = document.createElement("iframe");
