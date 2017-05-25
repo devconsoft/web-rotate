@@ -92,7 +92,7 @@ function dispatchItem(item) {
  */
 function dispatch(cfg) {
     if (cfg.index >= cfg.config.length) { // end of list
-        if (cfg.reload !== "false" || cfg.reload) {
+        if (cfg.reload) {
             log.debug("Reloading page");
             window.location.reload(true);
             return;
