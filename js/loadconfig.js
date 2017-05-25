@@ -31,6 +31,7 @@ function getQueryStringParams() {
     while (match = search.exec(query)) {
         key = decode(match[1]);
         value = decode(match[2]);
+        value = convertURLValue(value)
         if (key in result) {
             var oldValue = result[key];
             if (oldValue instanceof Array) {
@@ -44,6 +45,19 @@ function getQueryStringParams() {
 
     }
     return result;
+}
+
+function convertURLValue(value) {
+    switch (value.toLowerCase()) {
+        case "false":
+            return false;
+        case "true":
+            return true;
+    }
+    if (! isNaN(value)) {
+        return +value // Converts to a number
+    }
+    return value
 }
 
 /**
@@ -121,7 +135,7 @@ function readConfig(fileName) {
   * @return conf1
   */
 function mergeConfig(conf1, conf2) {
-    for (prop in conf2) {
+    for (var prop in conf2) {
         conf1[prop] = conf2[prop];
     }
     return conf1;
@@ -140,4 +154,3 @@ function getConfig() {
     config = mergeConfig(config, args);
     return config;
 }
-
