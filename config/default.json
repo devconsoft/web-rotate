@@ -2,6 +2,7 @@
     "time": 5,
     "logLevel": "OFF",
     "reload": false,
+    "skip": [],
     "config": [
         { "type": "page", "src": "default.html", "time": 60 }
     ]

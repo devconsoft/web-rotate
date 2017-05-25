@@ -49,6 +49,15 @@ items with lower index will never be shown.
 ### title (string)
 Specifies the title of the top page. Defaults to "Web Rotate".
 
+### skip (list of integers)
+The skip mechanism allows for an easy way to skip a specific item. It is
+especially useful when used in the URL. The first item has index 0.
+
+Passing a skip-value in the URL will completely override any skip-list defined
+in the configuration file.
+
+Example (skips item 3 and 6): `?skip=2&skip=5`
+
 ## Special use of hash in URL
 The hash part of the URL has special meaning to web rotate, it is used to pass
 a one time start index.

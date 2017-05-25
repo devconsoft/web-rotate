@@ -28,7 +28,7 @@ function getQueryStringParams() {
     var key = "";
     var value = "";
 
-    while (match = search.exec(query)) {
+    while ((match = search.exec(query))) {
         key = decode(match[1]);
         value = decode(match[2]);
         value = convertURLValue(value)

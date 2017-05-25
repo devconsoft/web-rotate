@@ -5,12 +5,18 @@
 function startWebRotate() {
     var cfg = getConfig();
     setLogLevel(cfg);
+    setSkip(cfg);
     setIndex(cfg);
     setPageTitle(cfg);
     logConfig(cfg);
+    removeSkippedItems(cfg);
     dispatch(cfg);
 }
 
+/**
+ * Writes out the complete configuration to the console log on debug level.
+ * @param {Object} cfg
+ */
 function logConfig(cfg) {
     log.debug("Configuration");
     for (var attr in cfg) {
@@ -27,14 +33,57 @@ function logConfig(cfg) {
     log.debug("--------")
 }
 
+/**
+ * Sets the page/document title; defaults to "Web Rotate".
+ * @param {Object} cfg
+ */
 function setPageTitle(cfg) {
     document.title = cfg.title || "Web Rotate";
     log.debug("Updated page title: " + document.title);
 }
 
+/**
+ * Sets the log level.
+ * @param {Object} cfg
+ */
 function setLogLevel(cfg) {
     log.level = cfg.logLevel || log.level;
     log.debug("Updated log level: " + log.level);
+}
+
+/**
+ * Assumes that if the value is not an array, it should be wrapped in one.
+ * It handles the case when a single skip value is passed via the URL.
+ *
+ * @param {Object} cfg
+ */
+function setSkip(cfg) {
+    if (!Array.isArray(cfg.skip)) {
+        cfg.skip = [cfg.skip];
+    }
+}
+
+/**
+ * Removes skipped items from the config-list based on the indexes in the skip-list.
+ *
+ * @param {Object} cfg
+ */
+function removeSkippedItems(cfg) {
+    cfg.skip.sort(function(a, b) { return a - b; }).reverse();
+    log.debug("Removing skipped items:", cfg.skip)
+    var skipSize = cfg.skip.length
+    var removedItems;
+    var skipIndex;
+    for (var i=0; i < skipSize; i++) {
+        skipIndex = cfg.skip[i];
+        if (skipIndex >= cfg.config.length || skipIndex < 0 || isNaN(skipIndex)) {
+            var msg = "Invalid skip index (index=" + skipIndex + ")";
+            log.error(msg)
+            throw new Error(msg);
+        }
+        removedItems = cfg.config.splice(skipIndex, 1);
+        log.debug("  ", removedItems[0]);
+    }
 }
 
 /**
@@ -85,26 +134,51 @@ function dispatchItem(item) {
 }
 
 /**
+ * Returns a special config item representing "no items available".
+ */
+function getNoItems() {
+    return { "type": "page", "src": "errors/noitems.html", "time": 600 }
+}
+
+/**
+ * Returns a special config item representing "missing item".
+ */
+function getMissingItem() {
+    return { "type": "page", "src": "errors/missingitem.html", "time": 600 }
+}
+
+/**
  * Dispatch the current item (decided by current index)
  * from the config (list) and schedule an update after the items specified time.
  * Start over or reload the entire page, if at end of list.
  * @param cfg (config object)
  */
 function dispatch(cfg) {
+    if (cfg.config.length == 0) {
+        dispatchItem(getNoItems());
+        return;
+    }
+
     if (cfg.index >= cfg.config.length) { // end of list
         if (cfg.reload) {
             log.debug("Reloading page");
             window.location.reload(true);
             return;
         }
-        log.debug("Restarting from beginning");
+        log.debug("Starting from beginning");
         cfg.index = 0;
     }
+
     var item = cfg.config[cfg.index];
-    item.time = item.time || cfg.time || 5;
-    item.index = cfg.index;
-    log.debug("Loading item [" + item.index + "], time: " + item.time + "s");
-    dispatchItem(item);
-    cfg.index++;
-    setTimeout(function() { dispatch(cfg); }, item.time * 1000);
+
+    if (item) {
+        item.time = item.time || cfg.time || 5;
+        item.index = cfg.index;
+        log.debug("Loading item [" + item.index + "], time: " + item.time + "s");
+        dispatchItem(item);
+        cfg.index++;
+        setTimeout(function() { dispatch(cfg); }, item.time * 1000);
+    } else {
+        dispatchItem(getMissingItem());
+    }
 }
