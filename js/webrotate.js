@@ -7,13 +7,29 @@ function startWebRotate() {
     setLogLevel(cfg);
     setIndex(cfg);
     setPageTitle(cfg);
+    logConfig(cfg);
     dispatch(cfg);
 }
 
+function logConfig(cfg) {
+    log.debug("Configuration");
+    for (var attr in cfg) {
+        if (attr == "config") {
+            log.debug("  config items:");
+            var configItems = cfg[attr]
+            for (var item in configItems) {
+                log.debug("    ", configItems[item]);
+            }
+        } else {
+            log.debug("  " + attr + ":", cfg[attr]);
+        }
+    }
+    log.debug("--------")
+}
 
 function setPageTitle(cfg) {
     document.title = cfg.title || "Web Rotate";
-    log.debug("Updated page title:" + document.title);
+    log.debug("Updated page title: " + document.title);
 }
 
 function setLogLevel(cfg) {
