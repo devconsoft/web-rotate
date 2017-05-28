@@ -11,7 +11,7 @@
      *
      * @returns {Object} Object of search string key-value parameters.
      */
-    function getQueryStringParams() {
+    var getQueryStringParams = function() {
 
         var searchStr = window.location.search
         // If search string not set, empty search string.
@@ -29,9 +29,10 @@
         var key = "";
         var value = "";
 
-        while (match = search.exec(query)) {
+        while ((match = search.exec(query))) {
             key = decode(match[1]);
             value = decode(match[2]);
+            value = convertURLValue(value)
             if (key in result) {
                 var oldValue = result[key];
                 if (oldValue instanceof Array) {
@@ -45,13 +46,26 @@
 
         }
         return result;
-    }
+    };
+
+    var convertURLValue = function(value) {
+        switch (value.toLowerCase()) {
+            case "false":
+                return false;
+            case "true":
+                return true;
+        }
+        if (! isNaN(value)) {
+            return +value // Converts to a number
+        }
+        return value
+    };
 
     /**
      * Parser the query string for web-rotate parameters and dispatches
      * a time-delayed relocation back to next index of the sent web-rotate URL.
      */
-    function startWebRotateClient() {
+    var startWebRotateClient = function() {
         var cfg = getQueryStringParams();
         var url = cfg.webRotateURL;
         var index = cfg.webRotateIndex;
