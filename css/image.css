@@ -13,5 +13,6 @@ div.content:BEFORE {
 img.picture {
     display: inline-block;
     vertical-align: middle;
+    max-width: 99%;
+    max-height: 99%;
 }
-
