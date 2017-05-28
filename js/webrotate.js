@@ -59,7 +59,12 @@ function setLogLevel(cfg) {
  */
 function setSkip(cfg) {
     if (!Array.isArray(cfg.skip)) {
-        cfg.skip = [cfg.skip];
+        if (typeof cfg.skip != 'undefined') {
+            cfg.skip = [cfg.skip];
+        } else {
+            cfg.skip = [];
+        }
+
     }
 }
 
