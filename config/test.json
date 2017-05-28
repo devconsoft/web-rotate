@@ -8,9 +8,9 @@
   "config": [
     { "type": "page", "src": "will.never.be.used" },
     { "type": "image", "src": "Example.png", "time": 4 },
-    { "type": "page", "src": "test.html", "time": 2.5 },
+    { "type": "page", "src": "test/test.html", "time": 2.5 },
     { "type": "page", "src": "should.be.skipped" },
-    { "type": "client", "src": "pages/clienttest.html", "time": 5.5 },
+    { "type": "client", "src": "pages/test/clienttest.html", "time": 5.5 },
     { "type": "web", "src": "http://example.com" }
   ]
 }
