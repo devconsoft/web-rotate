@@ -1,3 +1,7 @@
 .project
 .settings
 *~
+/config/*
+/images/*
+/pages/*
+node_modules
